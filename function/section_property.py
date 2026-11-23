@@ -99,6 +99,7 @@ class WSection(BaseSection):
         self.area = self.d * self.bf - dw * (self.bf - self.tw)
         self.Iz = (self.bf * self.d**3 - (self.bf - self.tw) * dw**3) / 12.0
         self.Iy = (2.0 * self.tf * self.bf**3 + dw * self.tw**3) / 12.0
+        self.Zz = self.bf * self.tf * (self.d - self.tf) + 0.25 * self.tw * (dw**2)  # <--- 移到這裡
 
         y1, y2, y3, y4 = -self.d / 2.0, -dw / 2.0, dw / 2.0, self.d / 2.0
         z1, z2, z3, z4 = -self.bf / 2.0, -self.tw / 2.0, self.tw / 2.0, self.bf / 2.0
@@ -131,6 +132,7 @@ class BoxSection(BaseSection):
         self.area = self.b * self.h - bw * hw
         self.Iz = (self.b * self.h**3 - bw * hw**3) / 12.0
         self.Iy = (self.h * self.b**3 - hw * bw**3) / 12.0
+        self.Zz = (self.b * self.h**2 - bw * hw**2) / 4.0
 
         y1, y2, y3, y4 = -self.h / 2.0, -hw / 2.0, hw / 2.0, self.h / 2.0
         z1, z2, z3, z4 = -self.b / 2.0, -bw / 2.0, bw / 2.0, self.b / 2.0
@@ -184,3 +186,5 @@ class SectionProperty:
             plt.show()
         else:
             plt.close(fig)
+
+    
