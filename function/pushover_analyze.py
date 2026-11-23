@@ -84,9 +84,9 @@ class PushoverAnalyzer:
         vb_kN = self.base_shear / kN
 
         fig, ax = plt.subplots(figsize=(8, 5))
-        ax.plot(drift_pct, vb_kN, color='firebrick', linewidth=2.0, label='Pushover Curve')
+        ax.plot(self.roof_disp, vb_kN, color='firebrick', linewidth=2.0, label='Pushover Curve')
         ax.grid(True, linestyle='--', alpha=0.4)
-        ax.set_xlabel("Roof Drift Ratio (%)")
+        ax.set_xlabel("Roof Displacement (m)")
         ax.set_ylabel("Base Shear (kN)")
         ax.set_title("Nonlinear Static Pushover Curve")
         ax.legend()
