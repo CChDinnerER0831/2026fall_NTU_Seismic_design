@@ -166,7 +166,7 @@ class SectionProperty:
         for sec in self.sections.values():
             sec.build()
 
-    def plot_all(self, save_dir=None, show=True, filename="All_Sections.png"):
+    def plot_all(self, save_dir=None, show=False, filename="All_Sections.png", save_individual=True):
         n = len(self.sections)
         if n == 0:
             return
@@ -175,7 +175,11 @@ class SectionProperty:
             axes = [axes]
 
         for ax, (name, sec) in zip(axes, self.sections.items()):
-            sec.plot(ax=ax, show=False, title=f"{name}\n({sec.__class__.__name__}, ID={sec.secID})")
+            title_str = f"{name}\n({sec.__class__.__name__}, ID={sec.secID})"
+            sec.plot(ax=ax, show=False, title=title_str)
+            # 若開啟個別存檔，同時輸出單張高清斷面圖
+            if save_dir is not None and save_individual:
+                sec.plot(save_dir=Path(save_dir) / "sections", show=False, title=title_str)
 
         fig.tight_layout()
         if save_dir is not None:

@@ -258,6 +258,13 @@ def main():
     struct.read_ipt(ipt_file)
     struct.build()
 
+    # 1.2 繪製所有斷面圖 (若斷面類別有 plot 方法)    
+
+    sec_prop.plot_all(save_dir=output_dir, show=False, filename="All_Sections.png")
+    sec_dir = output_dir / "sections"
+    for name, sec in sec_prop.sections.items():
+        sec.plot(save_dir=sec_dir, show=False, title=f"{name} ({sec.__class__.__name__}, ID={sec.secID})")
+
     # 2. 模態分析求基本週期 T1 並依 FEMA 273 更新側力分佈
     periods = struct.run_eigen(num_modes=3)
     T1 = periods[0]
@@ -301,26 +308,8 @@ def main():
     evaluator.check_members_at_disp(dt_mce, perf_level="CP", save_dir=output_dir)
     print("\nAll Task 1 evaluations completed successfully!")
 
-    # 7. 繪製所有斷面圖 (若斷面類別有 plot 方法)    
+   
 
-    sec_output_dir = output_dir / "sections"
-    sec_output_dir.mkdir(parents=True, exist_ok=True)
-    if hasattr(sec_prop, "plot_sections"):
-        sec_prop.plot_sections(save_dir=sec_output_dir, show=False)
-    else:
-        for sec_name, sec in sec_prop.sections.items():
-            if hasattr(sec, "plot"):
-                sec.save_dir = sec_output_dir
-                sec.show = False
-                sec.plot()
-            elif hasattr(sec, "fib_sec") and sec.fib_sec:
-                opsv.plot_fiber_section(sec.fib_sec, fillflag=0)
-                fig = plt.gcf()
-                plt.axis("equal")
-                plt.title(f"Fiber Section {sec.secID} ({sec_name})")
-                fig.tight_layout()
-                fig.savefig(sec_output_dir / f"Section_{sec.secID}_{sec_name}.png", dpi=600, bbox_inches="tight")
-                plt.close(fig)
 
 if __name__ == "__main__":
     main()
